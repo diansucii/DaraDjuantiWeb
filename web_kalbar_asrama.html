@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Asrama Mahasiswi Kalimantan Barat — Dara Djuanti</title>
+  <meta name="description" content="Asrama Dara Djuanti Yogyakarta — rumah mahasiswi Kalimantan Barat. Galeri, majalah Hai Diva, kepengurusan, dan lokasi." />
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* Palette: Melayu–Dayak warm (maroon, gold, wood) */
+    :root{
+      --bg: #FFF8F2;
+      --maroon: #6b2e2e;
+      --gold: #d4a24a;
+      --wood: #3e2c22;
+      --card:#ffffff;
+      --muted:#7a6a63;
+      --glass: rgba(255,255,255,0.6);
+      --dark-bg:#141212;
+      --dark-card:#26201c;
+      --shadow: 0 12px 30px rgba(62,44,34,0.08);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:'Poppins',sans-serif;background:var(--bg);color:var(--wood);-webkit-font-smoothing:antialiased}
+
+    /* Header with subtle Dayak motif overlay */
+    header{position:relative;padding:48px 16px 96px;background:linear-gradient(180deg, rgba(107,46,46,0.86), rgba(62,44,34,0.6)), url('https://images.unsplash.com/photo-1543852786-1cf6624b9987?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=60') center/cover no-repeat;color:#fff;text-align:center}
+    header::after{content:'';position:absolute;inset:0;background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><g fill="%23ffffff" fill-opacity="0.03"><path d="M10 100 C 40 20, 160 20, 190 100 C160 180,40 180,10 100 Z"/></g></svg>');background-repeat:repeat;mix-blend-mode:overlay}
+
+    .logos{position:absolute;left:18px;top:18px;display:flex;gap:10px;align-items:center;z-index:5}
+    .logos img{height:56px;border-radius:8px;background:rgba(255,255,255,0.06);padding:6px}
+
+    h1{font-family:'Playfair Display',serif;margin:0;font-size:2.6rem;letter-spacing:1px;text-shadow:0 8px 30px rgba(0,0,0,0.36)}
+    .lead{margin-top:12px;opacity:0.95;font-size:1.05rem}
+    nav{margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+    .btn{background:var(--gold);color:var(--maroon);padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:600;border:none;cursor:pointer}
+    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.12);color:#fff}
+
+    main{max-width:1180px;margin:-80px auto 60px;padding:0 18px}
+    .grid{display:grid;grid-template-columns:2fr 360px;gap:22px}
+    @media(max-width:980px){.grid{grid-template-columns:1fr}}
+    .card{background:var(--card);border-radius:14px;padding:18px;box-shadow:var(--shadow);transition:transform .22s ease}
+    .card:hover{transform:translateY(-6px)}
+    .section-title{display:flex;align-items:center;gap:10px}
+    .section-title h2{margin:0;font-family:'Playfair Display',serif;color:var(--maroon)}
+
+    /* Gallery */
+    .controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+    input[type=text], input[type=file], select, textarea{padding:8px;border-radius:8px;border:1px solid #eaddd3}
+    .gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-top:12px}
+    .gallery-item{position:relative;border-radius:10px;overflow:hidden;cursor:pointer;background:#eee}
+    .gallery-item img{width:100%;height:140px;object-fit:cover;transition:transform .35s ease}
+    .gallery-item:hover img{transform:scale(1.06)}
+    .caption{position:absolute;left:8px;bottom:8px;background:linear-gradient(90deg, rgba(0,0,0,0.6), rgba(0,0,0,0.2));color:#fff;padding:6px 8px;border-radius:8px;font-size:.85rem}
+
+    /* Kepengurusan */
+    .kp-list{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .kp-item{background:linear-gradient(180deg,var(--bg),#fff);padding:12px;border-radius:10px;border:1px solid rgba(0,0,0,0.04)}
+    @media(max-width:980px){.kp-list{grid-template-columns:repeat(2,1fr)}}
+
+    /* Majalah */
+    .mag-list article{background:linear-gradient(180deg,#fff,var(--bg));padding:12px;border-radius:8px;margin-bottom:8px}
+
+    /* footer */
+    footer{padding:22px;text-align:center;color:#fff;background:linear-gradient(90deg,var(--maroon),#4b2a2a);border-radius:10px;margin-top:30px}
+
+    /* Lightbox */
+    .lightbox{position:fixed;inset:0;background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:center;z-index:9999;opacity:0;pointer-events:none;transition:opacity .18s}
+    .lightbox.open{opacity:1;pointer-events:auto}
+    .lightbox img{max-width:92%;max-height:86%;border-radius:8px}
+    .lightbox .meta{position:absolute;bottom:30px;left:30px;color:#fff;font-size:0.95rem}
+
+    /* Modal */
+    .modal{position:fixed;inset:0;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;z-index:9999;opacity:0;pointer-events:none;transition:opacity .18s}
+    .modal.open{opacity:1;pointer-events:auto}
+    .modal-box{background:var(--card);padding:18px;border-radius:12px;min-width:320px}
+
+    /* Dark */
+    body.dark{background:var(--dark-bg);color:var(--card)}
+    body.dark .card{background:var(--dark-card);box-shadow:0 8px 28px rgba(0,0,0,0.6)}
+    body.dark footer{background:linear-gradient(90deg,#231f1f,#1a1515)}
+
+    .muted{color:var(--muted)}
+    .small{font-size:0.92rem}
+
+    /* small responsive tweaks */
+    @media(max-width:600px){ h1{font-size:1.6rem} .logos img{height:44px} }
+  </style>
+</head>
+<body>
+  <!-- Logos (replace with direct Drive URLs if available) -->
+  <div class="logos">
+    <img id="logo-provinsi" src="https://upload.wikimedia.org/wikipedia/commons/2/2e/Coat_of_arms_of_Kalimantan_West.png" alt="Logo Kalbar" title="Logo Provinsi Kalimantan Barat">
+    <img id="logo-asrama" src="https://via.placeholder.com/120x54?text=Logo+Dara+Djuanti" alt="Logo Asrama" title="Logo Asrama Dara Djuanti">
+  </div>
+
+  <header>
+    <h1>Asrama Mahasiswi Kalimantan Barat — Dara Djuanti</h1>
+    <p class="lead">Melayu–Dayak: melestarikan budaya, kebersamaan, dan pendidikan di Yogyakarta.</p>
+    <nav>
+      <a class="btn" href="#profil">Profil</a>
+      <a class="btn" href="#galeri">Galeri</a>
+      <a class="btn" href="#majalah">Hai Diva</a>
+      <a class="btn" href="#kepengurusan">Kepengurusan</a>
+      <a class="btn" href="#lokasi">Lokasi</a>
+      <button id="login-btn" class="btn ghost">Login Pengurus</button>
+      <button id="theme-toggle" class="btn">Dark Mode</button>
+    </nav>
+  </header>
+
+  <main>
+    <div class="grid" style="max-width:1180px;margin: -80px auto 60px;padding:0 18px">
+      <div>
+        <!-- Profil -->
+        <section id="profil" class="card">
+          <div class="section-title"><h2>Profil</h2></div>
+          <p id="profil-text">Asrama Dara Djuanti adalah rumah kedua bagi mahasiswi asal Kalimantan Barat yang menempuh pendidikan di Yogyakarta. Asrama mengangkat nilai budaya Melayu–Dayak, kekeluargaan, dan pengembangan diri.</p>
+        </section>
+
+        <!-- Majalah -->
+        <section id="majalah" class="card" style="margin-top:16px">
+          <div class="section-title"><h2>Majalah — Hai Diva</h2></div>
+          <div class="mag-list" id="mag-list"></div>
+
+          <div id="mag-controls" style="margin-top:10px;display:none;gap:8px">
+            <input id="mag-title" placeholder="Judul (judul artikel/edisi)" />
+            <input id="mag-pdf" type="file" accept="application/pdf" />
+            <button id="add-mag" class="btn">Upload / Tambah</button>
+          </div>
+        </section>
+
+        <!-- Galeri -->
+        <section id="galeri" class="card" style="margin-top:16px">
+          <div class="top-row" style="display:flex;justify-content:space-between;align-items:center">
+            <div class="section-title"><h2>Galeri Foto</h2></div>
+            <div class="controls"><label class="muted small">Tahun</label><select id="year-select"></select></div>
+          </div>
+
+          <div id="gallery-controls" style="margin-top:12px;display:none;gap:8px;align-items:center">
+            <input id="file-img" type="file" accept="image/*" multiple />
+            <input id="img-caption" placeholder="Keterangan (opsional)" />
+            <button id="add-img" class="btn">Tambah Foto</button>
+          </div>
+
+          <div class="gallery-grid" id="gallery-grid"></div>
+        </section>
+      </div>
+
+      <aside>
+        <div class="card">
+          <div class="section-title"><h2>Kepengurusan (9 Anggota)</h2></div>
+          <div id="kp-list" class="kp-list">
+            <div class="kp-item">Ketua<br><strong>Nila Prasetya</strong></div>
+            <div class="kp-item">Wakil Ketua<br><strong>Ayu S.</strong></div>
+            <div class="kp-item">Sekretaris<br><strong>Mira L.</strong></div>
+            <div class="kp-item">Bendahara<br><strong>Dewi P.</strong></div>
+            <div class="kp-item">Humas<br><strong>Rina T.</strong></div>
+            <div class="kp-item">Koord. Kegiatan<br><strong>Siti M.</strong></div>
+            <div class="kp-item">Koord. Pendidikan<br><strong>Vina K.</strong></div>
+            <div class="kp-item">Koord. Kesenian<br><strong>Yuni A.</strong></div>
+            <div class="kp-item">Koord. RT<br><strong>Lina R.</strong></div>
+          </div>
+
+          <div id="kp-controls" style="margin-top:12px;display:none;gap:8px">
+            <input id="kp-input" placeholder="Jabatan - Nama" />
+            <button id="add-kp" class="btn">Tambah/Ubah</button>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:12px">
+          <div class="section-title"><h2>Lokasi</h2></div>
+          <p><strong>Alamat:</strong><br>Jl. Bintaran Kidul No.19, RT.03/RW.01, Wirogunan, Kec. Mergangsan, Kota Yogyakarta, Daerah Istimewa Yogyakarta 55151</p>
+          <iframe width="100%" height="220" style="border-radius:10px;border:0;margin-top:8px" src="https://maps.google.com/maps?q=Jl.%20Bintaran%20Kidul%20No.19%20Yogyakarta&t=&z=15&ie=UTF8&iwloc=&output=embed"></iframe>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer>© 2025 Asrama Mahasiswi Kalimantan Barat — Dara Djuanti</footer>
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="lightbox" aria-hidden="true">
+    <img id="lightbox-img" src="" alt="Foto besar" />
+    <div class="meta" id="lightbox-meta"></div>
+    <button id="close-lightbox" class="btn" style="position:absolute;top:18px;right:22px">Tutup</button>
+  </div>
+
+  <!-- Login modal -->
+  <div id="login-modal" class="modal" aria-hidden="true">
+    <div class="modal-box">
+      <h3>Login Pengurus</h3>
+      <p class="muted">Gunakan username & password untuk aktifkan fitur edit. (Default: <strong>admin / pengurus2025</strong>)</p>
+      <input id="login-user" placeholder="Username" style="width:100%;margin-top:8px;padding:8px;border-radius:8px;border:1px solid #ddd" />
+      <input id="login-pass" type="password" placeholder="Password" style="width:100%;margin-top:8px;padding:8px;border-radius:8px;border:1px solid #ddd" />
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:10px">
+        <button id="close-login" class="btn ghost">Batal</button>
+        <button id="do-login" class="btn">Masuk</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ---------- Config & State ----------
+    const ADMIN_USER = 'admin';
+    const ADMIN_PASS = 'pengurus2025';
+    let isAdmin = false;
+
+    // Elements
+    const loginBtn = document.getElementById('login-btn');
+    const loginModal = document.getElementById('login-modal');
+    const closeLoginBtn = document.getElementById('close-login');
+    const doLoginBtn = document.getElementById('do-login');
+    const userField = document.getElementById('login-user');
+    const passField = document.getElementById('login-pass');
+
+    // show login modal
+    loginBtn.addEventListener('click', ()=>{ loginModal.classList.add('open'); loginModal.setAttribute('aria-hidden','false'); });
+    closeLoginBtn.addEventListener('click', ()=>{ loginModal.classList.remove('open'); loginModal.setAttribute('aria-hidden','true'); });
+
+    doLoginBtn.addEventListener('click', ()=>{
+      const u = userField.value.trim(); const p = passField.value.trim();
+      if(u===ADMIN_USER && p===ADMIN_PASS){ isAdmin = true; loginModal.classList.remove('open'); loginModal.setAttribute('aria-hidden','true'); enableAdmin(); alert('Login berhasil — fitur pengurus aktif.'); }
+      else alert('Username atau password salah.');
+    });
+
+    function enableAdmin(){
+      // show admin controls
+      document.getElementById('gallery-controls').style.display='flex';
+      document.getElementById('kp-controls').style.display='flex';
+      document.getElementById('mag-controls').style.display='flex';
+
+      // allow editing profile and kepengurusan
+      document.getElementById('profil-text').contentEditable = true; document.getElementById('profil-text').classList.add('editable');
+      document.querySelectorAll('.kp-item').forEach(el=>{el.contentEditable=true; el.classList.add('editable')});
+
+      // add edit toggle and download buttons if missing
+      if(!document.getElementById('edit-toggle')){
+        const t = document.createElement('button'); t.id='edit-toggle'; t.className='btn ghost'; t.textContent='Mode Edit: OFF'; t.style.marginLeft='8px';
+        t.onclick = ()=>{ const on = t.dataset.on==='true'; setEditable(!on); t.dataset.on = (!on); t.textContent = 'Mode Edit: ' + (!on? 'ON':'OFF'); };
+        document.querySelector('nav').appendChild(t);
+      }
+      if(!document.getElementById('download-html')){
+        const d = document.createElement('button'); d.id='download-html'; d.className='btn ghost'; d.textContent='Unduh HTML'; d.onclick = downloadHtml; document.querySelector('nav').appendChild(d);
+      }
+    }
+
+    function setEditable(on){
+      document.getElementById('profil-text').contentEditable = on; document.getElementById('profil-text').classList.toggle('editable', on);
+      document.querySelectorAll('.kp-item').forEach(el=>{el.contentEditable = on; el.classList.toggle('editable', on)});
+    }
+
+    function downloadHtml(){ const html = '<!doctype html>' + document.documentElement.outerHTML; const blob = new Blob([html],{type:'text/html'}); const a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='asrama_dara_djuanti.html'; a.click(); }
+
+    // ---------- Years for gallery ----------
+    const yearSelect = document.getElementById('year-select');
+    for(let y=2018;y<=2030;y++){ const o = document.createElement('option'); o.value=y; o.textContent=y; if(y===2024) o.selected=true; yearSelect.appendChild(o); }
+
+    // ---------- Lightbox ----------
+    const lightbox = document.getElementById('lightbox'); const lbImg = document.getElementById('lightbox-img'); const lbMeta = document.getElementById('lightbox-meta'); const closeLB = document.getElementById('close-lightbox');
+    closeLB.addEventListener('click', ()=>{ lightbox.classList.remove('open'); lightbox.setAttribute('aria-hidden','true'); });
+
+    document.addEventListener('click', (e)=>{
+      const gi = e.target.closest('.gallery-item');
+      if(gi && e.target.tagName==='IMG'){
+        const src = e.target.src; const cap = gi.querySelector('.caption')?.textContent || '';
+        lbImg.src = src; lbMeta.textContent = cap; lightbox.classList.add('open'); lightbox.setAttribute('aria-hidden','false');
+      }
+    });
+
+    // ---------- Add images (admin only) ----------
+    document.getElementById('add-img').addEventListener('click', ()=>{
+      if(!isAdmin) return alert('Hanya pengurus yang dapat menambah foto.');
+      const files = document.getElementById('file-img').files; if(!files || files.length===0) return alert('Pilih gambar dari komputer.');
+      const cap = document.getElementById('img-caption').value.trim(); const year = document.getElementById('year-select').value;
+      Array.from(files).forEach(f=>{
+        const reader = new FileReader(); reader.onload = (ev)=>{
+          const div = document.createElement('div'); div.className='gallery-item';
+          const img = document.createElement('img'); img.src = ev.target.result; img.alt = cap || f.name;
+          const c = document.createElement('div'); c.className='caption'; c.textContent = (cap? cap + ' - ' + year : year);
+          div.appendChild(img); div.appendChild(c); document.getElementById('gallery-grid').prepend(div);
+        }; reader.readAsDataURL(f);
+      });
+      document.getElementById('file-img').value=''; document.getElementById('img-caption').value='';
+    });
+
+    // ---------- Kepengurusan add ----------
+    document.getElementById('add-kp').addEventListener('click', ()=>{
+      if(!isAdmin) return alert('Hanya pengurus yang dapat menambah kepengurusan.');
+      const v = document.getElementById('kp-input').value.trim(); if(!v) return alert('Isi format: Jabatan - Nama');
+      const div = document.createElement('div'); div.className='kp-item'; div.innerHTML = v.replace('-','<br/>'); document.getElementById('kp-list').appendChild(div); document.getElementById('kp-input').value='';
+    });
+
+    // ---------- Majalah add (PDF or article) ----------
+    document.getElementById('add-mag').addEventListener('click', ()=>{
+      if(!isAdmin) return alert('Hanya pengurus yang dapat menambah majalah.');
+      const title = document.getElementById('mag-title').value.trim(); const file = document.getElementById('mag-pdf').files[0];
+      if(!title) return alert('Masukkan judul edisi/artikel.');
+      const art = document.createElement('article'); art.className='card'; art.style.marginBottom='8px';
+      const h = document.createElement('h3'); h.textContent = title; art.appendChild(h);
+      if(file){ const url = URL.createObjectURL(file); const a = document.createElement('a'); a.href = url; a.target='_blank'; a.textContent = 'Buka PDF'; art.appendChild(a); }
+      document.getElementById('mag-list').prepend(art); document.getElementById('mag-title').value=''; document.getElementById('mag-pdf').value='';
+    });
+
+    // ---------- Theme toggle ----------
+    const themeToggle = document.getElementById('theme-toggle'); themeToggle.addEventListener('click', ()=>{ document.body.classList.toggle('dark'); themeToggle.textContent = document.body.classList.contains('dark')? 'Light Mode':'Dark Mode'; localStorage.setItem('asrama_theme', document.body.classList.contains('dark')? 'dark':'light'); });
+    if(localStorage.getItem('asrama_theme')==='dark'){ document.body.classList.add('dark'); themeToggle.textContent='Light Mode' }
+
+    // Hide admin controls till login
+    document.getElementById('gallery-controls').style.display='none'; document.getElementById('kp-controls').style.display='none'; document.getElementById('mag-controls').style.display='none';
+
+    // ---------- Notes on Drive URLs ----------
+    /*
+      Untuk memakai gambar/logo dari Google Drive:
+      1) Buka file di Drive -> pilih "Get link" -> ubah akses ke "Anyone with the link".
+      2) Ambil FILEID dari link (string setelah "id=") dan gunakan URL:
+         https://drive.google.com/uc?id=FILEID
+      3) Ganti src pada <img id="logo-asrama"> atau tambahkan item gallery dengan URL tersebut.
+    */
+
+    // Optional: preload sample images from Drive if you convert them to direct URLs and push into an array here.
+
+  </script>
+</body>
+</html>
